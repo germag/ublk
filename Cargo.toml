@@ -1,0 +1,12 @@
+[package]
+name = "ublk"
+version = "0.0.0"
+description = "Rust library for userspace block drivers"
+edition = "2021"
+repository = "https://github.com/germag/ublk"
+keywords = ["ublk", "libublksrv"]
+license = "MIT"
+authors = ["German Maglione <gmaglione@redhat.com>"]
+
+[dependencies]
+
