@@ -9,9 +9,10 @@ license = "MIT"
 authors = ["German Maglione <gmaglione@redhat.com>"]
 
 [dependencies]
-#libc = "0.2.134"
+libc = "0.2.134"
 io-uring = { version = "0.5.6", features = ["unstable"] }
 bitflags = "2.0.0-rc.1"
+thiserror = "1.0.37"
 
 [dev-dependencies]
 structopt = "0.3.26"

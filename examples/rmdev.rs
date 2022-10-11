@@ -3,7 +3,7 @@
 extern crate structopt;
 extern crate ublk;
 
-use std::io;
+use std::process;
 use structopt::StructOpt;
 use ublk::control::UblkCtrl;
 
@@ -17,10 +17,13 @@ struct Opt {
     device_id: Option<u32>,
 }
 
-fn main() -> io::Result<()> {
+fn main() {
     let opt = Opt::from_args();
 
-    let mut ubctrl = UblkCtrl::new()?;
+    let mut ubctrl = UblkCtrl::new().unwrap_or_else(|err| {
+        eprintln!("{}", err);
+        process::exit(1);
+    });
     if let Some(dev_id) = opt.device_id {
         if let Err(err) = ubctrl.delete_device(dev_id) {
             eprintln!("Error device ID {}: {}", dev_id, err);
@@ -30,5 +33,4 @@ fn main() -> io::Result<()> {
             let _ = ubctrl.delete_device(dev_id);
         }
     }
-    Ok(())
 }
