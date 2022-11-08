@@ -1,0 +1,14 @@
+[package]
+name = "ublkctl"
+version = "0.1.0"
+description = "Rust command-line utility for userspace block storage"
+edition = "2021"
+repository = "https://github.com/germag/ublk"
+keywords = ["ublk", "libublksrv"]
+license = "MIT"
+authors = ["German Maglione <gmaglione@redhat.com>"]
+
+[dependencies]
+clap = { version = "4.0.22", features = [ "derive" ] }
+libc = "0.2.137"
+ublk = { path = "../ublk" }

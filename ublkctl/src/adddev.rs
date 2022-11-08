@@ -1,42 +1,36 @@
 // SPDX-License-Identifier: MIT
 
-extern crate structopt;
-extern crate ublk;
-
+use clap::Args;
 use std::process;
-use structopt::StructOpt;
 use ublk::control::{DeviceFlags, DeviceInfo, DeviceOptions, DeviceParams, UblkCtrl};
 
-#[derive(StructOpt)]
-#[structopt(name = "adddev", about = "Add a new ublk device.")]
-struct Opt {
+#[derive(Args)]
+pub(crate) struct Opt {
     /// ublk device id [default: first available id]
-    #[structopt(long)]
+    #[clap(long)]
     device_id: Option<u32>,
 
     /// Number of hardware queues
-    #[structopt(long)]
+    #[clap(long)]
     num_queues: Option<u16>,
 
-    #[structopt(long)]
+    #[clap(long)]
     queue_depth: Option<u16>,
 
-    #[structopt(long)]
+    #[clap(long)]
     max_io_buf_size: Option<u32>,
 
-    #[structopt(long)]
+    #[clap(long)]
     zero_copy: bool,
 
-    #[structopt(long)]
+    #[clap(long)]
     iou_comp_in_task: bool,
 
-    #[structopt(long)]
+    #[clap(long)]
     need_get_data: bool,
 }
 
-fn main() {
-    let opt = Opt::from_args();
-
+pub(crate) fn add_device(opt: &Opt) {
     let mut ubctrl = UblkCtrl::new().unwrap_or_else(|err| {
         eprintln!("{}", err);
         process::exit(1);
@@ -91,7 +85,7 @@ fn main() {
         io_opt_shift: 12,
         io_min_shift: 9,
         max_sectors: info.max_io_buf_bytes >> 9, // dividing by the sector size (512)
-        dev_sectors: dev_size >> 9,  // dividing by the sector size (512)
+        dev_sectors: dev_size >> 9,              // dividing by the sector size (512)
         ..Default::default()
     };
 
