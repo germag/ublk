@@ -1,25 +1,19 @@
 // SPDX-License-Identifier: MIT
 
-extern crate structopt;
-extern crate ublk;
-
+use clap::Args;
 use std::process;
-use structopt::StructOpt;
 use ublk::control::UblkCtrl;
 
 const MAX_NR_UBLK_DEVS: u32 = 128;
 
-#[derive(StructOpt)]
-#[structopt(name = "rmdev", about = "Remove ublk devices.")]
-struct Opt {
+#[derive(Args)]
+pub(crate) struct Opt {
     /// ublk device id [default: all ublk devices]
-    #[structopt(long)]
+    #[clap(long)]
     device_id: Option<u32>,
 }
 
-fn main() {
-    let opt = Opt::from_args();
-
+pub(crate) fn remove_dev(opt: &Opt) {
     let mut ubctrl = UblkCtrl::new().unwrap_or_else(|err| {
         eprintln!("{}", err);
         process::exit(1);

@@ -1,34 +1,27 @@
 // SPDX-License-Identifier: MIT
 
-extern crate libc;
-extern crate structopt;
-extern crate ublk;
-
+use clap::Args;
 use std::process;
-use structopt::StructOpt;
 use ublk::control::{DeviceInfo, DeviceParams, UblkCtrl};
 
 const MAX_NR_UBLK_DEVS: u32 = 128;
 
-#[derive(StructOpt)]
-#[structopt(name = "devinfo", about = "Show ublk device info.")]
-struct Opt {
+#[derive(Args)]
+pub(crate) struct Opt {
     /// ublk device id [default: all ublk devices]
-    #[structopt(long)]
+    #[clap(long)]
     device_id: Option<u32>,
 
     /// Show device parameters
-    #[structopt(long)]
+    #[clap(long)]
     params: bool,
 
     /// Show queues cpu affinity
-    #[structopt(long)]
+    #[clap(long)]
     affinity: bool,
 }
 
-fn main() {
-    let opt = Opt::from_args();
-
+pub(crate) fn get_dev_info(opt: &Opt) {
     let mut ubctrl = UblkCtrl::new().unwrap_or_else(|err| {
         eprintln!("{}", err);
         process::exit(1);
